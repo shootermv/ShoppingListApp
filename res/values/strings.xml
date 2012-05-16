@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ShoppingListActivity!</string>
+    <string name="app_name">ShoppingList</string>
+    <string name="no_items">no items</string>
+    <string name="menu_insert">Add Item</string>
+    <string name="item_title">Add New Item</string>
+    <string name="menu_delete">Delete Item</string>
+    <string name="chk_ios">koko</string>
+    <string name="menu_edit">Edit</string>
+</resources>

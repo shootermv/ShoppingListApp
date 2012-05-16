@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+  	android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="6dip"
+    android:paddingRight="6dip"
+    android:paddingBottom="3dip"        
+    >
+
+    <EditText
+        android:id="@+id/body"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dip"
+        android:autoText="true"
+        android:capitalize="sentences"
+        android:ems="25"
+        android:maxLines="1"
+        android:scrollHorizontally="true" />
+
+    <TimePicker
+        android:id="@+id/quantity"
+        android:layout_width="73dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/item_title" />
+
+</LinearLayout>
