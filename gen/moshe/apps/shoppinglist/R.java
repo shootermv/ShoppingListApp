@@ -38,7 +38,9 @@ public final class R {
         public static final int no_items=0x7f040002;
     }
     public static final class style {
-        public static final int MyDefaultTextAppearance=0x7f050001;
         public static final int MyTheme=0x7f050000;
+        public static final int TextAppearance=0x7f050001;
+        public static final int foritem=0x7f050002;
+        public static final int forlistview=0x7f050003;
     }
 }

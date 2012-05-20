@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="fill_parent"
+       android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:longClickable="true"
-       android:orientation="horizontal" >
+       android:orientation="horizontal"
+       style="@style/foritem"
+        >
 
        <CheckBox
            android:id="@+id/chkIsDone"
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
+           android:layout_height="wrap_content"
+           android:layout_weight="0"
+            />
 
        <TextView
            xmlns:android="http://schemas.android.com/apk/res/android"
            android:id="@+id/text1"
-           android:layout_width="120dp"
-           android:layout_height="match_parent"
-           android:layout_weight="0.73"
-           android:padding="10dp"
+           style="@style/foritem"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="4"
+           
            android:textColor="#0000FF"
            android:textSize="16sp" />
 
        <TextView
+           style="@style/foritem"
            xmlns:android="http://schemas.android.com/apk/res/android"
            android:id="@+id/txtQuantity"
-           android:layout_width="38dp"
-           android:layout_height="37dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
            android:padding="10dp"
-           android:textColor="#FFFFFF"
+           android:layout_weight="0"
            android:textSize="16sp"/>
       
 

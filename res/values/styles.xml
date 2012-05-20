@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <style name="MyTheme" parent="android:Theme.Light">
-    <item name="android:textAppearance">@style/MyDefaultTextAppearance</item>
+    <item name="android:textAppearance">@style/TextAppearance</item>
   </style>
 
-  <style name="MyDefaultTextAppearance" parent="@android:style/TextAppearance">
+  <style name="TextAppearance" parent="@android:style/TextAppearance">
     <item name="android:textSize">12sp</item>
     <item name="android:textColor">#333</item>
     <item name="android:textStyle">bold</item>
   </style>
+  <style name="foritem">
+    <item name="android:layout_marginBottom"> 10dip </item>
+    <item name="android:background">#FFFFFF</item>
+ </style>
+ <style name="forlistview">
+    <item name="android:layout_marginBottom"> 10dip </item>
+    <item name="android:background">#000000</item>
+ </style>   
 </resources>
