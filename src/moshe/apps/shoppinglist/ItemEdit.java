@@ -38,7 +38,7 @@ public class ItemEdit extends Activity {
 		if(mRowId != null){
 			DBAdapter db=new DBAdapter(this);
 			db.open();
-			Cursor c =db.getTitle( mRowId ) ;
+			Cursor c =db.getItem( mRowId ) ;
 			mBodyText.setText(c.getString(
                     c.getColumnIndexOrThrow(DBAdapter.KEY_TITLE)));
 			
@@ -57,16 +57,15 @@ public class ItemEdit extends Activity {
             	DBAdapter db = new DBAdapter(view.getContext());
             	db.open(); 
             	if (mRowId == null) {
-            	    db.insertTitle(
-            	    	"047017661X",
-            	    	mBodyText.getText().toString(),
-            	    	"Wrox");
+            	    db.insertNewItem(             	    	
+            	    	mBodyText.getText().toString(),//title
+            	    	1);
             	
             	}
             	else{
             		
             		int h=mQuantityPicker.getCurrentHour();
-            		db.updateTitle(mRowId,false,
+            		db.updateItem(mRowId,
             				mBodyText.getText().toString(),
             				h) ;
             	

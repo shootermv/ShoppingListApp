@@ -77,9 +77,15 @@ public class ShoppingListActivity extends ListActivity {
 
         
         try {
+        	/*
+        	DBAdapter db = new DBAdapter(this);
+        	db.open();
+        	db.insertNewList("usual list");
+        	db.close();
+        	*/
 		/*	DBAdapter db = new DBAdapter(this);
 			db.open();
-      db.updateTitle(2,"done",
+           db.updateTitle(2,"done",
 					"Sugar",
 					"Wrox") ; */
 			//db.deleteTitle(1);
@@ -93,7 +99,7 @@ public class ShoppingListActivity extends ListActivity {
 	    //	Toast.LENGTH_LONG).show();
 		
 		//	db.close();	
-        	setContentView(R.layout.notepad_list);
+        	setContentView(R.layout.items_list);
         	fillData();
         	
 
@@ -171,7 +177,7 @@ public class ShoppingListActivity extends ListActivity {
 	        DBAdapter db = new DBAdapter(this);
 		    
 	    	db.open();
-	    	Cursor c = db.getAllTitles();
+	    	Cursor c = db.getAllItems();
 	    	/*old code using SimpleCursorAdapter
 	    	startManagingCursor(c);
 	

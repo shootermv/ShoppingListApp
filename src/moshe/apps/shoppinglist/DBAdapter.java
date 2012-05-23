@@ -8,23 +8,47 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 public class DBAdapter {
 	
+	
+	
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_ISDONE = "isdone";
 	public static final String KEY_TITLE = "title";
-	public static final String KEY_PUBLISHER = "publisher";
 	public static final String KEY_QUANTITY="quantity";
+	private static final String KEY_LISTID = "list_id";
+	private static final String KEY_LISTNAME="listName";
+	
 	
 	
 	private static final String TAG = "DBAdapter";
 	private static final String DATABASE_NAME = "shopping_lists";
-	private static final String DATABASE_TABLE = "list_items";
-	private static final int DATABASE_VERSION = 6;
-	private static final String DATABASE_CREATE =
-	"create table list_items (_id integer primary key autoincrement, "
-	+ "isdone boolean  not null DEFAULT false,"
+	private static final String ITEMS_TABLE_NAME = "list_items";
+	private static final String LISTS_TABLE_NAME = "lists";
+	
+	
+	private static final int DATABASE_VERSION = 12;
+
+	
+	
+	
+	//create lists table
+	private static final String LISTS_TABLE_CREATE =
+	"create table lists ("
+	+"_id integer primary key autoincrement, "
+	+" listName text not null"
+	+" );";
+	
+	//create items table
+	private static final String ITEMS_TABLE_CREATE =
+	"create table list_items ("
+	+"_id integer primary key autoincrement, "
+	+" isdone boolean  not null DEFAULT false,"
 	+" title text not null,"
-	+" quantity integer not null DEFAULT 1"
-	+ ");";
+	+" list_id integer,"
+	+" quantity integer not null DEFAULT 1,"
+	+" FOREIGN KEY(list_id) REFERENCES lists(_id)"	
+	+" );";		
+
+	
 	private final Context context;
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
@@ -33,6 +57,10 @@ public class DBAdapter {
 	   this.context = ctx;
 	   DBHelper = new DatabaseHelper(context);
 	}	
+	
+	
+	
+	
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		DatabaseHelper(Context context)
@@ -44,7 +72,10 @@ public class DBAdapter {
 		{
 			
 		   try {
-			   db.execSQL(DATABASE_CREATE);
+			   
+			   db.execSQL(LISTS_TABLE_CREATE );
+			   db.execSQL(ITEMS_TABLE_CREATE );
+			   
 			} 
 		    catch (Exception e){
 		    	e.printStackTrace();
@@ -56,12 +87,11 @@ public class DBAdapter {
 			Log.w(TAG, "Upgrading database from version " + oldVersion
 			+ " to "
 			+ newVersion + ", which will destroy all old data");*/
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ITEMS_TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + LISTS_TABLE_NAME);
 			onCreate(db);
 		}
-	}
-	
-	
+	}	
 	
 	public DBAdapter open() throws SQLException
 	{
@@ -74,8 +104,34 @@ public class DBAdapter {
 	{
 	     DBHelper.close();
 	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	public long insertNewList( String listName){
+		
+		Long res=(long) 0;
+		try{
+		ContentValues initialValues = new ContentValues();
+
+		initialValues.put(KEY_LISTNAME,  listName);
+	
+		res= db.insert(LISTS_TABLE_NAME, null, initialValues);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return res;		
+		
+		
+	}
+	
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	
 	//---insert a item into the database---
-	public long insertTitle(String isdone, String title, String publisher)
+	public long insertNewItem( String title, int list_id)
 	{
 		Long res=(long) 0;
 		try{
@@ -83,7 +139,8 @@ public class DBAdapter {
 		initialValues.put(KEY_ISDONE, false);
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_QUANTITY, 1);
-		res= db.insert(DATABASE_TABLE, null, initialValues);
+		initialValues.put(KEY_LISTID, list_id);
+		res= db.insert(ITEMS_TABLE_NAME, null, initialValues);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -94,20 +151,20 @@ public class DBAdapter {
 	public boolean deleteItem(long rowId)
 	{
 		try {
-			return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+			return db.delete(ITEMS_TABLE_NAME, KEY_ROWID + "=" + rowId, null) > 0;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
 		return false;
 	}
 	//---retrieves all the titles---
-	public Cursor getAllTitles()
+	public Cursor getAllItems()
 	{
 		Cursor c=null;
 		try {
-			c =db.query(DATABASE_TABLE, new String[] {
+			c =db.query(ITEMS_TABLE_NAME, new String[] {
 			KEY_ROWID,
 			KEY_ISDONE,
 			KEY_TITLE,
@@ -124,12 +181,12 @@ public class DBAdapter {
 		return c;
 	}
 	//---retrieves a particular title---
-	public Cursor getTitle(long rowId) throws SQLException
+	public Cursor getItem(long rowId) throws SQLException
 	{
 		Cursor mCursor =null;
 		try {
 			mCursor =
-			db.query(true, DATABASE_TABLE, new String[] {
+			db.query(true, ITEMS_TABLE_NAME, new String[] {
 			KEY_ROWID,
 			KEY_ISDONE,
 			KEY_TITLE,
@@ -155,16 +212,17 @@ public class DBAdapter {
 		}
 		return mCursor;
 	}
-	//---updates a title---
-	public boolean updateTitle(long rowId, boolean isdone,
+	
+	//---updates the item details---
+	public boolean updateItem(long rowId,/* boolean isdone,*/
 	String title, int quantity)
 	{
 		try {
 			ContentValues args = new ContentValues();
-			args.put(KEY_ISDONE, isdone);
+			//args.put(KEY_ISDONE, isdone);
 			args.put(KEY_TITLE, title);
 			args.put(KEY_QUANTITY, quantity);
-			return db.update(DATABASE_TABLE, args,
+			return db.update(ITEMS_TABLE_NAME, args,
 			KEY_ROWID + "=" + rowId, null) > 0;
 		} catch (Exception e) {
 			
@@ -181,7 +239,7 @@ public class DBAdapter {
 			ContentValues args = new ContentValues();
 			args.put(KEY_ISDONE, isdone);
 
-			return db.update(DATABASE_TABLE, args,
+			return db.update(ITEMS_TABLE_NAME, args,
 			KEY_ROWID + "=" + rowId, null) > 0;
 		} catch (Exception e) {
 			
