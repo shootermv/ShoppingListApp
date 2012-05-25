@@ -14,8 +14,9 @@ public class DBAdapter {
 	public static final String KEY_ISDONE = "isdone";
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_QUANTITY="quantity";
-	private static final String KEY_LISTID = "list_id";
-	private static final String KEY_LISTNAME="listName";
+	
+	public static final String KEY_LISTID = "_id";
+	public static final String KEY_LISTNAME="listName";
 	
 	
 	
@@ -33,8 +34,9 @@ public class DBAdapter {
 	//create lists table
 	private static final String LISTS_TABLE_CREATE =
 	"create table lists ("
-	+"_id integer primary key autoincrement, "
-	+" listName text not null"
+	+" _id integer primary key autoincrement, "
+	+" listName text not null,"
+	+" recentlyUsed boolean  not null DEFAULT false"
 	+" );";
 	
 	//create items table
@@ -106,6 +108,7 @@ public class DBAdapter {
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	//LISTS:
 	
 	public long insertNewList( String listName){
 		
@@ -120,15 +123,33 @@ public class DBAdapter {
 			
 			e.printStackTrace();
 		}
-		return res;		
+		return res;					
+	}
+	public Cursor getAllLists(){
 		
+		Cursor c=null;
+		try {
+			c =db.query(LISTS_TABLE_NAME, new String[] {
+			KEY_LISTID,
+			KEY_LISTNAME
+            },
+			null,
+			null,
+			null,
+			null,			
+			null
+           );
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return c;		
 		
 	}
 	
 	
-	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
-	
+	//IEMS:
 	
 	//---insert a item into the database---
 	public long insertNewItem( String title, int list_id)
@@ -214,8 +235,7 @@ public class DBAdapter {
 	}
 	
 	//---updates the item details---
-	public boolean updateItem(long rowId,/* boolean isdone,*/
-	String title, int quantity)
+	public boolean updateItem(long rowId, String title, int quantity)	
 	{
 		try {
 			ContentValues args = new ContentValues();
@@ -232,8 +252,8 @@ public class DBAdapter {
 		return false;
 		
 	}	
-	public boolean updateIsDone( long rowId, boolean isdone
-	)
+	//---updates only isDone field of item
+    public boolean updateIsDone( long rowId, boolean isdone)	
 	{
 		try {
 			ContentValues args = new ContentValues();
