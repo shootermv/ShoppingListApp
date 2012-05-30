@@ -3,6 +3,7 @@ package moshe.apps.shoppinglist;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,7 +27,7 @@ public class DBAdapter {
 	private static final String LISTS_TABLE_NAME = "lists";
 	
 	
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 13;
 
 	
 	
@@ -126,6 +127,11 @@ public class DBAdapter {
 		return res;					
 	}
 	public Cursor getAllLists(){
+		
+		long count=DatabaseUtils.queryNumEntries(db, "lists");
+              
+		
+		
 		
 		Cursor c=null;
 		try {

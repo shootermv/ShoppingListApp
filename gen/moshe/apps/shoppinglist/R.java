@@ -11,25 +11,30 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int backrepeat=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int scale1=0x7f020002;
+        public static final int addbuttonstyle=0x7f020000;
+        public static final int backrepeat=0x7f020001;
+        public static final int gottolistarrow=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int scale1=0x7f020004;
     }
     public static final class id {
         public static final int add=0x7f060002;
         public static final int body=0x7f060000;
+        public static final int btnAddNewList=0x7f06000d;
+        public static final int btnGoToList=0x7f060011;
         public static final int chkIsDone=0x7f060009;
         public static final int header=0x7f060004;
         public static final int item1=0x7f060005;
         public static final int item2=0x7f060006;
         public static final int item3=0x7f060007;
         public static final int item4=0x7f060008;
-        public static final int itemName=0x7f06000e;
-        public static final int layout=0x7f06000c;
-        public static final int listview=0x7f06000d;
+        public static final int itemName=0x7f060010;
+        public static final int layout=0x7f06000e;
+        public static final int listview=0x7f06000f;
         public static final int main=0x7f060003;
         public static final int quantity=0x7f060001;
         public static final int text1=0x7f06000a;
+        public static final int textView1=0x7f06000c;
         public static final int txtQuantity=0x7f06000b;
     }
     public static final class layout {
@@ -51,6 +56,7 @@ public final class R {
         public static final int no_items=0x7f040002;
     }
     public static final class style {
+        public static final int HeaderText=0x7f050004;
         public static final int MyTheme=0x7f050000;
         public static final int TextAppearance=0x7f050001;
         public static final int foritem=0x7f050002;

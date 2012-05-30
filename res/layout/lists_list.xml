@@ -5,38 +5,38 @@
 	android:layout_height="fill_parent"
 	android:layout_width="fill_parent">
 	<!-- Header -->
-	<LinearLayout android:id="@+id/header"
-		android:background="#ff347c12"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		>
-		<TextView android:id="@+id/item1"
-			android:layout_height="fill_parent"
+	<LinearLayout
+	    android:id="@+id/header"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/backrepeat"
+	    android:orientation="horizontal" >
+
+		<TextView
+		    android:id="@+id/textView1"
+		    android:layout_height="fill_parent"
 			android:layout_width="wrap_content"
 			android:width="20dip"
-			android:height="30dip"
-		/>
-		<TextView android:id="@+id/item2"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			android:text="col_1_h"
-			android:width="100dip"
-			android:height="30dip"
-		/>
-		<TextView android:id="@+id/item3"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			android:text="col_2_h"
-			android:width="100dip"
-			android:height="30dip"
-		/>
-		<TextView android:id="@+id/item4"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			android:text="col_3_h"
-			android:width="100dip"
-			android:height="30dip"
-		/>
+			android:height="50dip"
+		    android:text="All lists"
+		    android:layout_weight="4"
+		    style="@style/HeaderText"
+		     />
+
+
+		<Button
+		    android:id="@+id/btnAddNewList"
+		    style="@style/HeaderText"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    
+		    android:layout_margin="5dp"
+		    android:background="@drawable/addbuttonstyle"
+		    android:height="40dip"
+		    android:text="+"
+		    android:paddingLeft="20dip"
+		    android:paddingRight="20dip" />
+
 	</LinearLayout>
 
 	<!-- List Divider -->
@@ -46,11 +46,11 @@
 
 	<!-- ListView (grid_items) -->
 	<LinearLayout android:id="@+id/layout"
-		android:layout_width="wrap_content"
+		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		<ListView android:id="@+id/listview"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent">
 		</ListView>
 	</LinearLayout>
-</LinearLayout>	
+</LinearLayout>

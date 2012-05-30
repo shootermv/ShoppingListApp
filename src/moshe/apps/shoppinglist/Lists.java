@@ -30,20 +30,31 @@ public class Lists  extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lists_list);
-        
+       	
+       	/*
+    	DBAdapter db1 = new DBAdapter(this);
+    	db1.open();
+    	db1.insertNewList("bb list");
+    	db1.close();
+    	*/
+    	       
         
         ListView lv= (ListView)findViewById(R.id.listview);
 
-        // create the grid item mapping
-        String[] from = new String[] {"rowid"};
-        int[] to = new int[] { R.id.item1, };
+
        
         
         DBAdapter db = new DBAdapter(this);
         db.open();
         Cursor c=db.getAllLists();
         MyAdapter adapter = new MyAdapter(this, c);
-        lv.setAdapter(adapter);
+        try{
+          lv.setAdapter(adapter);
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        
+        }
         db.close();
         
         

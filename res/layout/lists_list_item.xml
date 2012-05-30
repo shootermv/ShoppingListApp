@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    style="@style/foritem">
         <TextView android:id="@+id/itemName"
         	
         	android:layout_height="fill_parent"
         	android:layout_width="wrap_content"
         	android:width="20dip"
+        	android:layout_weight="4"
         />
 
-	    <TextView android:id="@+id/item4"
-	        android:text="col_3"
-	        android:layout_height="fill_parent"
-	        android:layout_width="wrap_content"
-	        android:width="100dip"
-	    />
+        <Button
+            android:id="@+id/btnGoToList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" android:layout_weight="0" />
+
 </LinearLayout>
