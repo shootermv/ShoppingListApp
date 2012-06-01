@@ -15,6 +15,7 @@ public class DBAdapter {
 	public static final String KEY_ISDONE = "isdone";
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_QUANTITY="quantity";
+	public static final String KEY_LIST_ID="list_id";
 	
 	public static final String KEY_LISTID = "_id";
 	public static final String KEY_LISTNAME="listName";
@@ -128,7 +129,7 @@ public class DBAdapter {
 	}
 	public Cursor getAllLists(){
 		
-		long count=DatabaseUtils.queryNumEntries(db, "lists");
+		//long count=DatabaseUtils.queryNumEntries(db, "lists");
               
 		
 		
@@ -166,7 +167,7 @@ public class DBAdapter {
 		initialValues.put(KEY_ISDONE, false);
 		initialValues.put(KEY_TITLE, title);
 		initialValues.put(KEY_QUANTITY, 1);
-		initialValues.put(KEY_LISTID, list_id);
+		initialValues.put(KEY_LIST_ID, list_id);
 		res= db.insert(ITEMS_TABLE_NAME, null, initialValues);
 		} catch (Exception e) {
 			
@@ -187,7 +188,7 @@ public class DBAdapter {
 		return false;
 	}
 	//---retrieves all the titles---
-	public Cursor getAllItems()
+	public Cursor getAllItems(long ListId)
 	{
 		Cursor c=null;
 		try {
@@ -196,7 +197,7 @@ public class DBAdapter {
 			KEY_ISDONE,
 			KEY_TITLE,
 			KEY_QUANTITY},
-			null,
+			KEY_LIST_ID+"="+ListId,
 			null,
 			null,
 			null,

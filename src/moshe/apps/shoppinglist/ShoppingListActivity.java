@@ -35,11 +35,22 @@ public class ShoppingListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT=1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private static final int EDIT_ID = Menu.FIRST + 2;
-	
+	private Long mListId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        
+        mListId   = (savedInstanceState == null) ? null :
+            (Long) savedInstanceState.getSerializable(DBAdapter.KEY_LISTID);
+		if (mListId == null) {
+			Bundle extras = getIntent().getExtras();
+			mListId = extras != null ? extras.getLong(DBAdapter.KEY_LISTID)
+									: null;
+		}       
+        
+        
         //setContentView(R.layout.main);
         
         
@@ -99,9 +110,12 @@ public class ShoppingListActivity extends ListActivity {
 	    //	Toast.LENGTH_LONG).show();
 		
 		//	db.close();	
-        	setContentView(R.layout.items_list);
-        	fillData();
         	
+        	
+        	if(mListId != null){
+        	  setContentView(R.layout.items_list);
+        	  fillData();
+        	}
 
         	
         	
@@ -177,7 +191,7 @@ public class ShoppingListActivity extends ListActivity {
 	        DBAdapter db = new DBAdapter(this);
 		    
 	    	db.open();
-	    	Cursor c = db.getAllItems();
+	    	Cursor c = db.getAllItems(mListId);
 	    	/*old code using SimpleCursorAdapter
 	    	startManagingCursor(c);
 	

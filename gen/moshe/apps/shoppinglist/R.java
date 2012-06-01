@@ -13,7 +13,7 @@ public final class R {
     public static final class drawable {
         public static final int addbuttonstyle=0x7f020000;
         public static final int backrepeat=0x7f020001;
-        public static final int gottolistarrow=0x7f020002;
+        public static final int gotbuttn_bgr=0x7f020002;
         public static final int ic_launcher=0x7f020003;
         public static final int scale1=0x7f020004;
     }
@@ -56,9 +56,11 @@ public final class R {
         public static final int no_items=0x7f040002;
     }
     public static final class style {
-        public static final int HeaderText=0x7f050004;
+        public static final int HeaderText=0x7f050005;
+        public static final int ItemText=0x7f050004;
         public static final int MyTheme=0x7f050000;
         public static final int TextAppearance=0x7f050001;
+        public static final int btnGoToList=0x7f050006;
         public static final int foritem=0x7f050002;
         public static final int forlistview=0x7f050003;
     }

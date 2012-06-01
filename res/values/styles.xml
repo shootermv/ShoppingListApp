@@ -10,17 +10,29 @@
     <item name="android:textStyle">bold</item>
   </style>
   <style name="foritem">
-    <item name="android:layout_marginBottom"> 10dip </item>
+    <item name="android:layout_marginBottom"> 10dip</item>
     <item name="android:background">#FFFFFF</item>
+    <item name="android:padding">5dp</item>
+    
  </style>
  <style name="forlistview">
     <item name="android:layout_marginBottom"> 10dip </item>
     <item name="android:background">#000000</item>
+    
  </style> 
+ <style name="ItemText">     
+    <item name="android:layout_margin">5dp</item>
  
+ </style>
  <style name="HeaderText">
     <item name="android:textSize">30sp</item>
     <item name="android:textColor">#FFF</item>
-  
+    <item name="android:layout_margin">5dp</item>
+ </style>
+  <style name="btnGoToList">
+    <item name="android:layout_margin">5dp</item> 
+    <item name="android:width">20dp</item> 
+    <item name="android:height">20dp</item>
+    <item name="android:background">@drawable/gotbuttn_bgr</item>
  </style>
 </resources>
