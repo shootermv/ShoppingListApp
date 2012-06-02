@@ -29,7 +29,7 @@ public class ItemEdit extends Activity {
             (Long) savedInstanceState.getSerializable(DBAdapter.KEY_ROWID);
 		if (mRowId == null) {
 			Bundle extras = getIntent().getExtras();
-			mRowId = extras != null ? extras.getLong(DBAdapter.KEY_ROWID)
+			mRowId = extras != null ? (extras.getLong(DBAdapter.KEY_ROWID)>0?extras.getLong(DBAdapter.KEY_ROWID):null)
 									: null;
 		}
         
@@ -59,7 +59,7 @@ public class ItemEdit extends Activity {
             	if (mRowId == null) {
             	    db.insertNewItem(             	    	
             	    	mBodyText.getText().toString(),//title
-            	    	1);
+            	    	getIntent().getExtras().getLong(DBAdapter.KEY_LIST_ID));
             	
             	}
             	else{

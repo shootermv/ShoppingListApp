@@ -293,6 +293,7 @@ public class ShoppingListActivity extends ListActivity {
     private void createItem() {
     	try{
           Intent i = new Intent(this, ItemEdit.class);
+          i.putExtra(DBAdapter.KEY_LIST_ID, mListId);
            startActivityForResult(i, ACTIVITY_CREATE);
 		} catch (SQLException e) {
 			

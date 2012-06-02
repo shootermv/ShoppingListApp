@@ -159,7 +159,7 @@ public class DBAdapter {
 	//IEMS:
 	
 	//---insert a item into the database---
-	public long insertNewItem( String title, int list_id)
+	public long insertNewItem( String title, long list_id)
 	{
 		Long res=(long) 0;
 		try{
