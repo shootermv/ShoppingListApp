@@ -19,10 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ResourceCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ListView;
@@ -115,6 +119,7 @@ public class ShoppingListActivity extends ListActivity {
         	if(mListId != null){
         	  setContentView(R.layout.items_list);
         	  fillData();
+        	  fillListsSpinner();
         	}
 
         	
@@ -132,6 +137,95 @@ public class ShoppingListActivity extends ListActivity {
         
 
     }//onCreate end
+    public void fillListsSpinner(){
+    	
+    	    DBAdapter db=new DBAdapter(this);
+    	    db.open();
+    	
+
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    Cursor listsCursor;
+    		Spinner listsSpinner = (Spinner) findViewById(R.id.changeList);
+    		listsCursor = db.getAllLists();
+
+    		startManagingCursor( listsCursor);
+    		/*Create an array to specify the fields we want to display in the list (only the 'colourName' column in this case) */
+            
+    		
+    		
+    		String[] from = new String[]{DBAdapter.KEY_LISTNAME}; 
+    		
+    		int[] to = new int[]{R.id.tvListName};
+
+    		 
+    		SimpleCursorAdapter listsAdapter =
+    		new SimpleCursorAdapter(this, R.layout.spinner_row, listsCursor, from, to);
+            
+    		 
+    		listsSpinner.setAdapter(listsAdapter);
+    		db.close();    		 	    	    	 
+            
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		/*
+    		
+    		SpinnerAdapter listss = new SpinnerAdapter(this, listsCursor);
+	    	
+    		listsSpinner.setAdapter(listss);        
+	        */
+	
+	    	db.close();
+	    	
+	    	
+	    	//attach handler
+	    	listsSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+	    	    @Override
+	    	    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+	    	    	Cursor c = (Cursor) (parentView.getAdapter().getItem(position)); 
+	    	    	long _id=c.getLong(c.getColumnIndex(DBAdapter.KEY_LISTID));
+	    	    	
+	    	    	if(mListId !=_id){
+	    	    	 mListId =_id;
+	    	    	fillData();
+	    	    	}
+	    	    	
+	    	    }
+
+	    	    @Override
+	    	    public void onNothingSelected(AdapterView<?> parentView) {
+	    	        // your code here
+	    	    }
+
+	    	});
+    		
+    		
+    		
+    		
+    		/*
+    		listsSpinner.setOnItemSelectedListener(
+                    new OnItemSelectedListener() {
+                        public void onItemSelected(
+                                AdapterView<?> parent, View view, int position, long id) {
+                            showToast("Spinner2: position=" + position + " id=" + id);
+                        }
+
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            showToast("Spinner2: unselected");
+                        }
+                    });
+           */
+    }
+    
     
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -218,8 +312,34 @@ public class ShoppingListActivity extends ListActivity {
 		}
 
     }
-    
+    private class SpinnerAdapter extends ResourceCursorAdapter {                               
+
+        public SpinnerAdapter(Context context, Cursor cur) {
+            super(context, R.layout.spinner_row, cur);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cur, ViewGroup parent) {
+            LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            return li.inflate(R.layout.spinner_row, parent, false);
+        }        
+        @Override
+        public void bindView(View view, Context context, Cursor cur) {
+        	TextView tv= (TextView)view.findViewById(R.id.tvListName);
+        	 final long  listID = cur.getInt(cur.getColumnIndex(DBAdapter.KEY_LISTID));
+        	 tv.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_LISTNAME)));
+        /*	tv.setOnClickListener( new View.OnClickListener() {  
+                public void onClick(View v) {  
+                   // CheckBox cb = (CheckBox) v ;  
+                   // SaveDone(cb.isChecked(), v.getContext(), listID);
+                	Toast toast = Toast.makeText(v.getContext(), String.valueOf(listID), Toast.LENGTH_SHORT);
+                	toast.show();
+                  }  
+            }); */
+        }
+    }
     private class MyAdapter extends ResourceCursorAdapter {
+
 
         public MyAdapter(Context context, Cursor cur) {
             super(context, R.layout.list_item, cur);
@@ -230,7 +350,6 @@ public class ShoppingListActivity extends ListActivity {
             LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             return li.inflate(R.layout.list_item, parent, false);
         }
-
         @Override
         public void bindView(View view, Context context, Cursor cur) {
         	TextView tvQuantityText = (TextView)view.findViewById(R.id.txtQuantity);

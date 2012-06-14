@@ -11,26 +11,15 @@
 		android:layout_width="fill_parent"
 		android:background="@drawable/backrepeat"
 		>
-		<TextView android:id="@+id/item1"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			android:width="20dip"
-			android:height="50dip"
-		/>
-		<TextView android:id="@+id/item2"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			
-			android:width="100dip"
-			android:height="50dip"
-		/>
-		<TextView android:id="@+id/item3"
-			android:layout_height="fill_parent"
-			android:layout_width="wrap_content"
-			
-			android:width="100dip"
-			android:height="50dip"
-		/>
+
+
+		<Spinner
+		    android:id="@+id/changeList"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1" />
+		
+		
 		<TextView android:id="@+id/item4"
 			android:layout_height="fill_parent"
 			android:layout_width="wrap_content"
@@ -38,6 +27,8 @@
 			android:width="100dip"
 			android:height="30dip"
 		/>
+
+
 </LinearLayout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
