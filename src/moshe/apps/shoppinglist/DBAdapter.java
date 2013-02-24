@@ -127,13 +127,12 @@ public class DBAdapter {
 		}
 		return res;					
 	}
+	
+	//Moshe
 	public Cursor getAllLists(){
 		
 		//long count=DatabaseUtils.queryNumEntries(db, "lists");
-              
-		
-		
-		
+              			
 		Cursor c=null;
 		try {
 			c =db.query(LISTS_TABLE_NAME, new String[] {
@@ -154,7 +153,23 @@ public class DBAdapter {
 		
 	}
 	
-	
+	//---updates the list item details---
+	public boolean updateListItem(long listId, String listname)	
+	{
+		try {
+			ContentValues args = new ContentValues();
+		
+			args.put(KEY_LISTNAME, listname);			
+			return db.update(LISTS_TABLE_NAME, args,
+					KEY_LISTID + "=" + listId, null) > 0;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return false;
+		
+	}		
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
 	//IEMS:
 	

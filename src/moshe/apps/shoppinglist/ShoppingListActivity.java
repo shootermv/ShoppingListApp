@@ -40,7 +40,7 @@ public class ShoppingListActivity extends ListActivity {
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private static final int EDIT_ID = Menu.FIRST + 2;
 	private Long mListId;
-	
+	private boolean isFirstTime=true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +52,9 @@ public class ShoppingListActivity extends ListActivity {
 			Bundle extras = getIntent().getExtras();
 			mListId = extras != null ? extras.getLong(DBAdapter.KEY_LISTID)
 									: null;
+			
+			
+			
 		}       
         
         
@@ -194,9 +197,14 @@ public class ShoppingListActivity extends ListActivity {
 	    	    	Cursor c = (Cursor) (parentView.getAdapter().getItem(position)); 
 	    	    	long _id=c.getLong(c.getColumnIndex(DBAdapter.KEY_LISTID));
 	    	    	
-	    	    	if(mListId !=_id){
-	    	    	 mListId =_id;
-	    	    	fillData();
+	    	    	if(isFirstTime ==true){
+	    	    	 
+	    	    	  fillData();
+	    	    	  isFirstTime =false;
+	    	    	}
+	    	    	else{
+	    	    		mListId =_id;
+	    	    		fillData();
 	    	    	}
 	    	    	
 	    	    }
