@@ -223,6 +223,39 @@ public class DBAdapter {
 		}
 		return c;
 	}
+	
+	//---retrieves a particular list record---
+	public Cursor getListItem(long rowId) throws SQLException
+	{
+		Cursor mCursor =null;	
+		try {
+			mCursor =
+			db.query(true, LISTS_TABLE_NAME, new String[] {
+					KEY_LISTID,
+					KEY_LISTNAME
+
+			},
+			KEY_LISTID + "=" + rowId,
+			null,
+			null,
+			null,
+			null,
+			null);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		if (mCursor != null) {
+			try{
+		       mCursor.moveToFirst();
+			}catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
+		return mCursor;		
+	}
+	
 	//---retrieves a particular title---
 	public Cursor getItem(long rowId) throws SQLException
 	{
@@ -274,6 +307,9 @@ public class DBAdapter {
 		return false;
 		
 	}	
+
+	
+	
 	//---updates only isDone field of item
     public boolean updateIsDone( long rowId, boolean isdone)	
 	{

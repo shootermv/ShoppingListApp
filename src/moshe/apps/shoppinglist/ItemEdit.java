@@ -49,10 +49,7 @@ public class ItemEdit extends Activity {
         
         confirmButton.setOnClickListener(new View.OnClickListener() {
         	 
-            public void onClick(View view) {
-            	            
-            	
-            	
+            public void onClick(View view) {            	                        	           
             	
             	DBAdapter db = new DBAdapter(view.getContext());
             	db.open(); 

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleAdapter;
@@ -43,17 +44,7 @@ public class Lists  extends Activity {
         setContentView(R.layout.lists_list);
         
         
-       	/*
-        try{	
-	    	DBAdapter db1 = new DBAdapter(this);
-	    	db1.open();
-	    	db1.updateListItem(2,"every day list");
-	    	db1.close();
-		}
-		catch(Exception e){
-        	e.printStackTrace();        
-        } 	
-    	*/      
+        
        
         ListView lv= (ListView)findViewById(R.id.listview);
        
@@ -75,14 +66,24 @@ public class Lists  extends Activity {
 
         registerForContextMenu((Button)findViewById(R.id.btnAddNewList));
 
-
+        registerForContextMenu( (ListView)findViewById(R.id.listview));
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-        //super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.stock_item_menu, menu);
+    	
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info;
+        try {
+            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        } catch (ClassCastException e) {
+            // If the menu object can't be cast, logs an error.
+            //Log.e("MENU", "bad menuInfo", e);
+            return;
+        }     
+    	getMenuInflater().inflate(R.menu.stock_item_menu, menu);
+    	menu.setHeaderTitle("Select an Option");
+    	//menu.setHeaderIcon(R.drawable.logo);
     }
     
   
@@ -110,23 +111,8 @@ public class Lists  extends Activity {
             
             
             
-            registerForContextMenu((TextView)tvListNameText);
-            //tv click
-            /*
-            tvListNameText.setOnClickListener( new View.OnClickListener() {
+            //registerForContextMenu((TextView)tvListNameText);
 
-				@Override
-				public void onClick(View v) {
-	               	  Toast toast = Toast.makeText(v.getContext(),"hi" ,Toast.LENGTH_SHORT);
-                	  toast.show();
-					
-				}  
-            	
-            	
-            	
-            	
-            });
-            */
             
             //button click
             btnGoToList.setOnClickListener( new View.OnClickListener() {  
@@ -134,8 +120,6 @@ public class Lists  extends Activity {
                 	 
                 	Intent i = new Intent(v.getContext(), ShoppingListActivity.class);
 
-                    
-                    
                     ListView lv= (ListView)findViewById(R.id.listview);
                     int p  = lv.getPositionForView(v);
                     
@@ -152,8 +136,26 @@ public class Lists  extends Activity {
                      */
                 
                    }
-                }); 
+                }); //end of btngo clik
          
+            
+            tvListNameText.setOnClickListener( new View.OnClickListener() {  
+                public void onClick(View v) {
+                	
+                	
+
+                    ListView lv= (ListView)findViewById(R.id.listview);
+                    int p  = lv.getPositionForView(v);
+                    
+                    Cursor c = (Cursor) (lv.getAdapter().getItem(p));
+                    final long  rowID = c.getInt(c.getColumnIndex(DBAdapter.KEY_LISTID));
+                    
+                	//Toast toast = Toast.makeText(v.getContext(),rowID+ "ui" ,Toast.LENGTH_SHORT);
+                	//toast.show();                   
+                	openContextMenu(v);
+                }
+                
+            });
         }
 
 
@@ -179,8 +181,12 @@ public class Lists  extends Activity {
              */  
             case R.id.edit_item:
             	Intent i = new Intent(this, ListItemEdit.class);
-            	i.putExtra(DBAdapter.KEY_ROWID, info.id);
+            	i.putExtra(DBAdapter.KEY_LIST_ID, info.id);
                 startActivityForResult(i, LIST_EDIT);
+               
+            //	ListView lv= (ListView)findViewById(R.id.listview);
+            //	Toast toast = Toast.makeText(lv.getContext(),info.id+ "ui" ,Toast.LENGTH_SHORT);
+            //	toast.show();           	
             	return true;
             case R.id.remove_item:
             	//DBAdapter db = new DBAdapter(this);
