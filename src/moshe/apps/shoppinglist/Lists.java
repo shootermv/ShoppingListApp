@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -46,25 +47,23 @@ public class Lists  extends Activity {
         
         
        
-        ListView lv= (ListView)findViewById(R.id.listview);
-       
-     
-        DBAdapter db = new DBAdapter(this);
-        db.open();
-       
-        Cursor c=db.getAllLists();
-        MyAdapter adapter = new MyAdapter(this, c);
-        try{
-          lv.setAdapter(adapter);
-        }
-        catch(Exception e){
-        	e.printStackTrace();        
-        }
-        db.close();
+        FillListView();
         
         
 
-        registerForContextMenu((Button)findViewById(R.id.btnAddNewList));
+        Button btnAddNewList=(Button)findViewById(R.id.btnAddNewList);
+        
+        btnAddNewList.setOnClickListener( new View.OnClickListener() { 
+        	
+        	//clickin add list button
+        	public void onClick(View v) {
+            	Intent i = new Intent(v.getContext(), ListItemEdit.class);
+            	Long list_id= null;
+            	i.putExtra(DBAdapter.KEY_LIST_ID,list_id);
+                startActivityForResult(i, LIST_EDIT);
+        	}
+        });
+        
 
         registerForContextMenu( (ListView)findViewById(R.id.listview));
     }
@@ -86,9 +85,35 @@ public class Lists  extends Activity {
     	//menu.setHeaderIcon(R.drawable.logo);
     }
     
-  
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        FillListView();
+    } 
     
- 
+    //fill listView
+    private void FillListView(){
+    	
+        ListView lv= (ListView)findViewById(R.id.listview);
+        
+        
+        DBAdapter db = new DBAdapter(this);
+        db.open();
+       
+        Cursor c=db.getAllLists();
+        MyAdapter adapter = new MyAdapter(this, c);
+        try{
+          lv.setAdapter(adapter);
+        }
+        catch(Exception e){
+        	e.printStackTrace();        
+        }
+        db.close();  	
+    	
+    }
+    
+    
     //start
     private class MyAdapter extends ResourceCursorAdapter {
 
@@ -111,10 +136,9 @@ public class Lists  extends Activity {
             
             
             
-            //registerForContextMenu((TextView)tvListNameText);
 
             
-            //button click
+            //button go to list click
             btnGoToList.setOnClickListener( new View.OnClickListener() {  
                   public void onClick(View v) {  
                 	 
@@ -162,7 +186,17 @@ public class Lists  extends Activity {
     } 
     //end
     
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+    }
  
     
     @Override
@@ -170,7 +204,7 @@ public class Lists  extends Activity {
     	int res=item.getItemId();
     	AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch(res) {
-        /*
+       /*
             case DELETE_ID:                
                 DBAdapter db = new DBAdapter(this);
                 db.open();
@@ -178,7 +212,7 @@ public class Lists  extends Activity {
                 db.close();
                 fillData();
                 return true;
-             */  
+               */
             case R.id.edit_item:
             	Intent i = new Intent(this, ListItemEdit.class);
             	i.putExtra(DBAdapter.KEY_LIST_ID, info.id);
@@ -189,10 +223,12 @@ public class Lists  extends Activity {
             //	toast.show();           	
             	return true;
             case R.id.remove_item:
-            	//DBAdapter db = new DBAdapter(this);
-            	//Intent i = new Intent(this, ItemEdit.class);
-            	//i.putExtra(DBAdapter.KEY_ROWID, info.id);
-               // startActivityForResult(i, LIST_EDIT);
+                DBAdapter db = new DBAdapter(this);
+                db.open();
+                db.deleteList(info.id);
+                db.close();
+                FillListView();
+               
             	
             	return true;
             	

@@ -383,12 +383,9 @@ public class ShoppingListActivity extends ListActivity {
          private void SaveDone(boolean isDone,Context contex,int  rowID){
  	        DBAdapter db = new DBAdapter(contex);
  		    
- 	    	db.open();         
-             
-             
+ 	    	 db.open();                                 
              db.updateIsDone( rowID,isDone);
-             db.close();	 
-        	 
+             db.close();	         	 
            
          }
 

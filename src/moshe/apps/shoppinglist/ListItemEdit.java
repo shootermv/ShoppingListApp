@@ -42,15 +42,36 @@ public class ListItemEdit extends Activity{
         	 
             public void onClick(View view) {  
             	
-                       	                        	           
+            	if (mRowId == null) {
+            		
+                	try{
+                		mRowId=null;
+            	    	mListName= (EditText) findViewById(R.id.txtListName);
+	                	DBAdapter db = new DBAdapter(view.getContext());
+	                	db.open(); 
+	                	String slistName=mListName.getText().toString();
+	            	    db.insertNewList(  slistName);           	    	
+	            	    		
+	                  	db.close();                                      
+	                    setResult(RESULT_OK);
+	                    finish();
+	        		} catch (Exception e) {
+	        		
+	        			e.printStackTrace();
+	        		}    	
+            	}
+            	else{               	                        	           
                 	
                 	DBAdapter db = new DBAdapter(view.getContext());
                 	db.open(); 
                		db.updateListItem(mRowId,
                				mListName.getText().toString()) ;
                 	
-                  	db.close();  
-            	
+                  	db.close();                                      
+                    setResult(RESULT_OK);
+                    finish();   
+                    
+            	}
             }
             
 		});

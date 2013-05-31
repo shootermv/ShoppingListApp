@@ -109,29 +109,14 @@ public class DBAdapter {
 	     DBHelper.close();
 	}
 	
+	
+	
+	
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++
 	//LISTS:
-	
-	public long insertNewList( String listName){
-		
-		Long res=(long) 0;
-		try{
-		ContentValues initialValues = new ContentValues();
 
-		initialValues.put(KEY_LISTNAME,  listName);
-	
-		res= db.insert(LISTS_TABLE_NAME, null, initialValues);
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
-		return res;					
-	}
-	
-	//Moshe
-	public Cursor getAllLists(){
-		
-		//long count=DatabaseUtils.queryNumEntries(db, "lists");
+	public Cursor getAllLists(){				
               			
 		Cursor c=null;
 		try {
@@ -153,7 +138,7 @@ public class DBAdapter {
 		
 	}
 	
-	//---updates the list item details---
+	//---update list details---
 	public boolean updateListItem(long listId, String listname)	
 	{
 		try {
@@ -169,7 +154,38 @@ public class DBAdapter {
 		
 		return false;
 		
-	}		
+	}	
+	
+	//---insert a list---
+	public long insertNewList( String listName){
+		
+		Long res=(long) 0;
+		try{
+		ContentValues initialValues = new ContentValues();
+
+		initialValues.put(KEY_LISTNAME,  listName);
+	
+		res= db.insert(LISTS_TABLE_NAME, null, initialValues);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return res;					
+	}
+	//--delete list---
+	public boolean deleteList(long rowId)
+	{
+		try {
+			return db.delete(LISTS_TABLE_NAME, KEY_LISTID + "=" + rowId, null) > 0;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
 	//IEMS:
 	
