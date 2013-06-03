@@ -55,7 +55,7 @@ public class Lists  extends Activity {
         
         btnAddNewList.setOnClickListener( new View.OnClickListener() { 
         	
-        	//clickin add list button
+        	//clicking add list button
         	public void onClick(View v) {
             	Intent i = new Intent(v.getContext(), ListItemEdit.class);
             	Long list_id= null;
@@ -134,10 +134,7 @@ public class Lists  extends Activity {
         	
             tvListNameText.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_LISTNAME)));
             
-            
-            
-
-            
+          
             //button go to list click
             btnGoToList.setOnClickListener( new View.OnClickListener() {  
                   public void onClick(View v) {  
@@ -153,11 +150,7 @@ public class Lists  extends Activity {
                 	i.putExtra(DBAdapter.KEY_LISTID, rowID);
                     startActivityForResult(i, (int) (long)rowID);
                     
-                	 /*
-                	int i=rowID;
-                	  Toast toast = Toast.makeText(v.getContext(),String.valueOf(rowID) ,Toast.LENGTH_SHORT);
-                	  toast.show();
-                     */
+
                 
                    }
                 }); //end of btngo clik

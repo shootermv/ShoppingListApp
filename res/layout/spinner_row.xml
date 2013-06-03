@@ -5,10 +5,13 @@ android:layout_height="fill_parent"
 xmlns:android="http://schemas.android.com/apk/res/android">
 
 <TextView android:text=""
-               android:textColor="#0000FF"
-           android:textSize="16sp"
-android:id="@+id/tvListName"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content">
+   android:textColor="#0000FF"
+   android:textSize="9pt"
+   android:id="@+id/tvListName"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:textStyle="bold" android:layout_weight="1"
+   android:padding="1pt"  >
+   
 </TextView>
 </LinearLayout>

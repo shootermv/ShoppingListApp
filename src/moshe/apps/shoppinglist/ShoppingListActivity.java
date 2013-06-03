@@ -173,7 +173,7 @@ public class ShoppingListActivity extends ListActivity {
     		db.close();    		 	    	    	 
             
     		
-    		
+    		SelectSpinnerItemByValue(listsSpinner, mListId);
     		
     		
     		
@@ -190,7 +190,7 @@ public class ShoppingListActivity extends ListActivity {
 	    	db.close();
 	    	
 	    	
-	    	//attach handler
+	    	//attach handler to select spinner item
 	    	listsSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 	    	    @Override
 	    	    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -234,7 +234,18 @@ public class ShoppingListActivity extends ListActivity {
            */
     }
     
-    
+    public static void SelectSpinnerItemByValue(Spinner spnr, long value)
+    {
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
+        for (int position = 0; position < adapter.getCount(); position++)
+        {
+            if(adapter.getItemId(position) == value)
+            {
+                spnr.setSelection(position);
+                return;
+            }
+        }
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
