@@ -124,32 +124,21 @@ public class ShoppingListActivity extends ListActivity {
         	  fillData();
         	  fillListsSpinner();
         	}
-
-        	
-        	
-        	
+        	        	        	
         	registerForContextMenu(getListView());
         	
         	
 		} catch (SQLException e) {
 		
 			e.printStackTrace();
-		}
-        
-      
-        
+		}                     
 
     }//onCreate end
     public void fillListsSpinner(){
     	
     	    DBAdapter db=new DBAdapter(this);
     	    db.open();
-    	
-
-    	    
-    	    
-    	    
-    	    
+   	    
     	    
     	    Cursor listsCursor;
     		Spinner listsSpinner = (Spinner) findViewById(R.id.changeList);
@@ -175,17 +164,7 @@ public class ShoppingListActivity extends ListActivity {
     		
     		SelectSpinnerItemByValue(listsSpinner, mListId);
     		
-    		
-    		
-    		
-    		
-    		
-    		/*
-    		
-    		SpinnerAdapter listss = new SpinnerAdapter(this, listsCursor);
-	    	
-    		listsSpinner.setAdapter(listss);        
-	        */
+
 	
 	    	db.close();
 	    	
@@ -233,7 +212,7 @@ public class ShoppingListActivity extends ListActivity {
                     });
            */
     }
-    
+    //for selecting the current list in the spinner
     public static void SelectSpinnerItemByValue(Spinner spnr, long value)
     {
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
@@ -357,63 +336,91 @@ public class ShoppingListActivity extends ListActivity {
             }); */
         }
     }
+
+    
     private class MyAdapter extends ResourceCursorAdapter {
-
-
+    	public boolean[] checked;	
         public MyAdapter(Context context, Cursor cur) {
             super(context, R.layout.list_item, cur);
-        }
+            
+            checked= new boolean[cur.getCount()];
+            int i = 0;  
+            while (cur.moveToNext()) {
+            	checked[i] = cur.getInt(cur.getColumnIndex(DBAdapter.KEY_ISDONE))==0? false:true;
+                // ^obviously you'd need to convert your value to boolean however
+                i++;
+            }
 
+        }
+        
+        
+        
+        
         @Override
         public View newView(Context context, Cursor cur, ViewGroup parent) {
             LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+               
             return li.inflate(R.layout.list_item, parent, false);
         }
+        
+        
+        
+        
         @Override
-        public void bindView(View view, Context context, Cursor cur) {
-        	TextView tvQuantityText = (TextView)view.findViewById(R.id.txtQuantity);
-            TextView tvListText = (TextView)view.findViewById(R.id.text1);
-            CheckBox cbListCheck = (CheckBox)view.findViewById(R.id.chkIsDone);
+        public void bindView(View view, Context context, final  Cursor cur) {
 
-            
-            
-            tvListText.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_TITLE)));
-            tvQuantityText.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_QUANTITY)));
-            cbListCheck.setChecked((cur.getInt(cur.getColumnIndex(DBAdapter.KEY_ISDONE))==0? false:true));
-            
-            final int  rowID = cur.getInt(cur.getColumnIndex(DBAdapter.KEY_ROWID));
-            //checkbox click
-            cbListCheck.setOnClickListener( new View.OnClickListener() {  
-                public void onClick(View v) {  
-                    CheckBox cb = (CheckBox) v ;  
-                    SaveDone(cb.isChecked(), v.getContext(), rowID);
-                  }  
-                }); 
-         
-        }
-         private void SaveDone(boolean isDone,Context contex,int  rowID){
+        	
+        	   //find inputs
+		       TextView tvQuantityText = (TextView)view.findViewById(R.id.txtQuantity);
+		       TextView tvListText = (TextView)view.findViewById(R.id.text1);
+		       CheckBox cbListCheck = (CheckBox)view.findViewById(R.id.chkIsDone);
+		
+		            
+		       //set text of inputs from db 
+		       tvListText.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_TITLE)));
+		       tvQuantityText.setText(cur.getString(cur.getColumnIndex(DBAdapter.KEY_QUANTITY)));
+		       
+		       
+		      
+		            final int position =cur.getPosition();
+		       final int  rowID = cur.getInt(cur.getColumnIndex(DBAdapter.KEY_ROWID));
+		       /*
+		       //checkbox click
+		       cbListCheck.setOnClickListener( new View.OnClickListener() {  		    	   
+		    	      
+				       public void onClick(View v) {  
+				            CheckBox cb = (CheckBox) v ;                  				                				             				                
+				            SaveDone(cb.isChecked(), v.getContext(), rowID);		                			                
+		               } //end of onclick 
+		       }); //end of clickListener
+		       */
+              
+		       cbListCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		           public void onCheckedChanged(CompoundButton v, boolean isChecked) {
+			            CheckBox cb = (CheckBox) v ;                  				                				             				                
+			            SaveDone(cb.isChecked(), v.getContext(), rowID);	
+			            
+			            checked[position] =cb.isChecked();
+		           }
+		       });		       
+		       
+		       
+		       cbListCheck.setChecked(checked[position]);//((cur.getInt(cur.getColumnIndex(DBAdapter.KEY_ISDONE))==0? false:true));
+
+        }//end of bindView
+        
+        private void SaveDone(boolean isDone,Context contex,int  rowID){
  	        DBAdapter db = new DBAdapter(contex);
  		    
  	    	 db.open();                                 
              db.updateIsDone( rowID,isDone);
              db.close();	         	 
            
-         }
+        }
 
     }    
-    /*
-    private void createItem() {
-    	
-        DBAdapter db = new DBAdapter(this);
-	    
-    	db.open();       
-    	long id = db.insertTitle(
-    	    	"047017661X",
-    	    	"Sugar",
-    	    	"Wrox");
-    	db.close();
-        fillData();
-    }*/
+   //end of myadapter
+
 
     public void DisplayTitle(Cursor c)
     {
@@ -435,15 +442,7 @@ public class ShoppingListActivity extends ListActivity {
 			e.printStackTrace();
 		}     
     }
-   /*
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Intent i = new Intent(this, NoteEdit.class);
-        i.putExtra(NotesDbAdapter.KEY_ROWID, id);
-        startActivityForResult(i, ACTIVITY_EDIT);
-    }
-   */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
